@@ -20,7 +20,7 @@ namespace SecurityDemo1.Models
             using (var serviceScope = provider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 var env = serviceScope.ServiceProvider.GetService<IHostingEnvironment>();
-                if (!env.IsDevelopment()) return;
+                if (!env.IsDevelopment()) return;  // Only in Development
 
                 CreateUsers(logger, serviceScope).GetAwaiter().GetResult();
 
