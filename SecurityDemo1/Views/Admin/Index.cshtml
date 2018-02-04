@@ -3,13 +3,13 @@
 @model AdminIndexViewModel
 @inject IAuthorizationService AuthorizationService
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Admin";
 }
 
-<h2>Index</h2>
+<h2>Admin</h2>
 
 <p>Identity name: @User.Identity.Name</p>
-<p>User name: @Model.FirstName @Model.LastName </p>
+<p>Name: @Model.GivenName @Model.Surname </p>
 
 @if ((await AuthorizationService.AuthorizeAsync(User, ApplicationUser.AppPolicies.King)).Succeeded)
 {
@@ -31,4 +31,4 @@
 {
     <p>You are a <b>chair person</b></p>
 }
-<p>1st Role: @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value</p>
+<p>1st Role: @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.GivenName)?.Value</p>

@@ -12,8 +12,8 @@ namespace SecurityDemo1.Models.AdminViewModels
 {
         public class AdminIndexViewModel
         {
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
+            public string GivenName { get; set; }
+            public string Surname { get; set; }
         }
 }
 
@@ -36,8 +36,8 @@ namespace SecurityDemo1.Controllers
 
             AdminIndexViewModel model = new AdminIndexViewModel
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName
+                GivenName = user.GivenName,
+                Surname = user.Surname
             };
 
             return View(model);

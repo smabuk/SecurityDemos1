@@ -139,8 +139,8 @@ namespace SecurityDemo1.Models
 
                 var user = new ApplicationUser
                 {
-                    FirstName = "Admin",
-                    LastName = "Admin",
+                    GivenName = "Admin",
+                    Surname = "Admin",
                     UserName = DefaultEmail,
                     Email = DefaultEmail
                 };
@@ -151,9 +151,9 @@ namespace SecurityDemo1.Models
 
                     await userManager.AddClaimsAsync(user, new Claim[]
                     {
-                new Claim(ClaimTypes.Name, $"{user.FirstName}, {user.LastName}"),
-                new Claim(ClaimTypes.GivenName, user.FirstName),
-                new Claim(ClaimTypes.Surname, user.LastName),
+                new Claim(ClaimTypes.Name, $"{user.GivenName}, {user.Surname}"),
+                new Claim(ClaimTypes.GivenName, user.GivenName),
+                new Claim(ClaimTypes.Surname, user.Surname),
                 new Claim(ApplicationUser.AppClaims.CommitteeMember, "treasurer"),
                 new Claim(ApplicationUser.AppClaims.CommitteeMember, "secretary"),
                 new Claim(ClaimTypes.Email, user.Email)

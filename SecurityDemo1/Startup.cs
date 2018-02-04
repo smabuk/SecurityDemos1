@@ -13,6 +13,7 @@ using SecurityDemo1.Models;
 using SecurityDemo1.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication;
 
 namespace SecurityDemo1
 {
@@ -37,8 +38,12 @@ namespace SecurityDemo1
             services.AddAuthentication()
                 .AddMicrosoftAccount(options =>
                 {
+                    options.ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.DateOfBirth, "dateofbirth");
+                    options.ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.Country, "country");
                     options.ClientId = Configuration["WEBSITE_AUTH_MSA_CLIENT_ID_FIX"];
                     options.ClientSecret = Configuration["WEBSITE_AUTH_MSA_CLIENT_SECRET_FIX"];
+                    options.SaveTokens = true;
+                    options.Validate();
                 });
 
             services.AddIdentity<ApplicationUser, IdentityRole>(config =>

@@ -280,7 +280,8 @@ namespace SecurityDemo1.Controllers
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
-                _logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
+                _logger.LogInformation($"User {info.Principal.FindFirstValue(ClaimTypes.Email)} ({info.Principal.FindFirstValue(ClaimTypes.Name)}) logged in with {info.LoginProvider} provider.");
+                _logger.LogInformation($"Country: {info.Principal.FindFirstValue(ClaimTypes.Country) ?? "None found"}");
                 return RedirectToLocal(returnUrl);
             }
             if (result.IsLockedOut)
@@ -293,7 +294,10 @@ namespace SecurityDemo1.Controllers
                 ViewData["ReturnUrl"] = returnUrl;
                 ViewData["LoginProvider"] = info.LoginProvider;
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                return View("ExternalLogin", new ExternalLoginViewModel { Email = email });
+                var givenname = info.Principal.FindFirstValue(ClaimTypes.GivenName);
+                var surname = info.Principal.FindFirstValue(ClaimTypes.Surname);
+                var fullname = info.Principal.FindFirstValue(ClaimTypes.Name);
+                return View("ExternalLogin", new ExternalLoginViewModel { Email = email, Name = fullname, GivenName = givenname, Surname = surname });
             }
         }
 
