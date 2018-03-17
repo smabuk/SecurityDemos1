@@ -124,13 +124,24 @@ namespace SecurityDemo1
                 ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor | Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto
             });
 
-            // From NuGet package NWebSec
+            // From NuGet package NWebSec. docs at https://docs.nwebsec.com/en/latest
+            // Implementing recommendations found at https://securityheaders.io
+            // Article https://damienbod.com/2018/02/08/adding-http-headers-to-improve-security-in-an-asp-net-mvc-core-application/
             // Registered before static files to always set header
-            // Closes Trust-On-First-Use loophole
             app.UseHsts(options => options.MaxAge(days: 365).IncludeSubdomains());
             app.UseXXssProtection(options => options.EnabledWithBlockMode());
             app.UseXContentTypeOptions();
             app.UseReferrerPolicy(options => options.SameOrigin());
+            app.UseCsp(opts => opts
+                .BlockAllMixedContent()
+                //.StyleSources(s => s.Self())            // remove to allow CDNs to function properly
+                //.StyleSources(s => s.UnsafeInline())    // really messes up general Admin pages
+                .FontSources(s => s.Self())
+                //.FormActions(s => s.Self())             // external logins don't work with this FormActions blocked
+                .FrameAncestors(s => s.Self())
+                .ImageSources(s => s.Self())
+                //.ScriptSources(s => s.Self())           // remove to allow CDNs to function properly
+            );
 
             app.UseStaticFiles();
 
