@@ -10,11 +10,12 @@ using SecurityDemo1.Models.AdminViewModels;
 
 namespace SecurityDemo1.Models.AdminViewModels
 {
-        public class AdminIndexViewModel
-        {
-            public string GivenName { get; set; }
-            public string Surname { get; set; }
-        }
+    public class AdminIndexViewModel
+    {
+        public string GivenName { get; set; } = "";
+        public string Surname { get; set; } = "";
+        public bool IsLoggedIn { get; set; } = false;
+    }
 }
 
 namespace SecurityDemo1.Controllers
@@ -32,13 +33,16 @@ namespace SecurityDemo1.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(User);
 
-            AdminIndexViewModel model = new AdminIndexViewModel
+            AdminIndexViewModel model = new AdminIndexViewModel();
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
             {
-                GivenName = user.GivenName,
-                Surname = user.Surname
-            };
+                model.GivenName = user.GivenName;
+                model.Surname = user.Surname;
+                model.IsLoggedIn = true;
+            }
 
             return View(model);
         }

@@ -8,27 +8,34 @@
 
 <h2>Admin</h2>
 
-<p>Identity name: @User.Identity.Name</p>
-<p>Name: @Model.GivenName @Model.Surname </p>
+@if (!Model.IsLoggedIn)
+{
+    <p>You are not logged in.</p>
+}
+else
+{
+    <p>Identity name: @User.Identity.Name</p>
+    <p>Name: @Model.GivenName @Model.Surname </p>
 
-@if ((await AuthorizationService.AuthorizeAsync(User, ApplicationUser.AppPolicies.King)).Succeeded)
-{
-    <strong>It's good to be the KING</strong>
-}
+    @if ((await AuthorizationService.AuthorizeAsync(User, ApplicationUser.AppPolicies.King)).Succeeded)
+    {
+        <strong>It's good to be the KING</strong>
+    }
 
-@if ((await AuthorizationService.AuthorizeAsync(User, ApplicationUser.AppPolicies.Admin)).Succeeded)
-{
-    <p>You are an <b>administrator</b></p>
+    @if ((await AuthorizationService.AuthorizeAsync(User, ApplicationUser.AppPolicies.Admin)).Succeeded)
+    {
+        <p>You are an <b>administrator</b></p>
+    }
+    @if ((await AuthorizationService.AuthorizeAsync(User, ApplicationUser.AppPolicies.Treasurer)).Succeeded)
+    {
+        <p>You are a <b>treasurer</b></p>
+    }@if ((await AuthorizationService.AuthorizeAsync(User, ApplicationUser.AppPolicies.CommitteeMember)).Succeeded)
+    {
+        <p>You are a <b>committee member</b></p>
+    }
+    @if ((await AuthorizationService.AuthorizeAsync(User, ApplicationUser.AppPolicies.Chairman)).Succeeded)
+    {
+        <p>You are a <b>chair person</b></p>
+    }
+    <p>1st Role: @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.GivenName)?.Value</p>
 }
-@if ((await AuthorizationService.AuthorizeAsync(User, ApplicationUser.AppPolicies.Treasurer)).Succeeded)
-{
-    <p>You are a <b>treasurer</b></p>
-}@if ((await AuthorizationService.AuthorizeAsync(User, ApplicationUser.AppPolicies.CommitteeMember)).Succeeded)
-{
-    <p>You are a <b>committee member</b></p>
-}
-@if ((await AuthorizationService.AuthorizeAsync(User, ApplicationUser.AppPolicies.Chairman)).Succeeded)
-{
-    <p>You are a <b>chair person</b></p>
-}
-<p>1st Role: @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.GivenName)?.Value</p>
