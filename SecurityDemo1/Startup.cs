@@ -60,7 +60,7 @@ namespace SecurityDemo1
                 config.AddPolicy(ApplicationUser.AppPolicies.King, policy =>
                 {
                     policy.RequireAuthenticatedUser();
-                    policy.RequireUserName("smabrookes@hotmail.com");
+                    policy.RequireUserName(Configuration["Rules:KingAddress"]);
                     policy.Build();
                 });
 
