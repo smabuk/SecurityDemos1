@@ -3,6 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>aspnet-SecurityDemo1-BBC6197E-4A54-4494-8091-B5DFABA676CF</UserSecretsId>
+    <Authors>Simon Brookes</Authors>
+    <Copyright>Copyright © 2018 Simon Brookes</Copyright>
+    <Description>This shows how to secure an ASP.Net Core 2.x project, including passing the tests at http://securityheaders.io</Description>
+    <VersionPrefix>1.1.0</VersionPrefix>
+    <VersionSuffix Condition=" '$(BUILD_BUILDNUMBER)' == '' ">$(ComputerName)-$([System.DateTime]::get_Now().get_Year())$([System.DateTime]::get_Now().get_Month().ToString("D2"))$([System.DateTime]::get_Now().get_Day().ToString("D2"))-$([System.DateTime]::get_Now().get_Hour().ToString("D2"))$([System.DateTime]::get_Now().get_Minute().ToString("D2"))</VersionSuffix>
+    <VersionSuffix Condition=" '$(BUILD_BUILDNUMBER)' != '' ">$(BUILD_SOURCEBRANCHNAME).$(BUILD_BUILDNUMBER)</VersionSuffix>
   </PropertyGroup>
 
 
