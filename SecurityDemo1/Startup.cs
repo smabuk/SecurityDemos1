@@ -139,7 +139,7 @@ namespace SecurityDemo1
                 .FontSources(s => s.Self())
                 //.FormActions(s => s.Self())             // external logins don't work with this FormActions blocked
                 .FrameAncestors(s => s.Self())
-                .ImageSources(s => s.Self())
+				.ImageSources(s => s.Self())			  // remove to allow Bootstrap SVG (menu etc.) to load
                 //.ScriptSources(s => s.Self())           // remove to allow CDNs to function properly
             );
 
