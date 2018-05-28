@@ -93,11 +93,11 @@ namespace SecurityDemo1
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
-            services.AddMvc(options =>
+			services.AddMvc(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 options.Filters.Add(new RequireHttpsAttribute());
-            });
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -110,13 +110,13 @@ namespace SecurityDemo1
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+				app.UseHsts(options => options.MaxAge(days: 365).IncludeSubdomains());
             }
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
@@ -128,7 +128,6 @@ namespace SecurityDemo1
             // Implementing recommendations found at https://securityheaders.io
             // Article https://damienbod.com/2018/02/08/adding-http-headers-to-improve-security-in-an-asp-net-mvc-core-application/
             // Registered before static files to always set header
-            app.UseHsts(options => options.MaxAge(days: 365).IncludeSubdomains());
             app.UseXXssProtection(options => options.EnabledWithBlockMode());
             app.UseXContentTypeOptions();
             app.UseReferrerPolicy(options => options.SameOrigin());
@@ -143,7 +142,8 @@ namespace SecurityDemo1
                 //.ScriptSources(s => s.Self())           // remove to allow CDNs to function properly
             );
 
-            app.UseStaticFiles();
+			app.UseHttpsRedirection();
+			app.UseStaticFiles();
 
             // Registered after static files, to set headers for dynamic content.
             app.UseXfo(xfo => xfo.Deny());
