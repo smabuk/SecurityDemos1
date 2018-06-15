@@ -9,6 +9,7 @@ namespace SecurityDemo1.Services
     {
         public string Name { get; set; } = "Security Demo 1";
         public string Logo { get; set; } = "Logo";
+        public string BootstrapVersion { get; set; } = "";
         public SiteTheme Theme { get; set; }
 
         public class SiteTheme
