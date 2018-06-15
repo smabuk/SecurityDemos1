@@ -40,11 +40,20 @@ namespace SecurityDemo1
                 {
                     options.ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.DateOfBirth, "dateofbirth");
                     options.ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.Country, "country");
-                    options.ClientId = Configuration["WEBSITE_AUTH_MSA_CLIENT_ID_FIX"];
-                    options.ClientSecret = Configuration["WEBSITE_AUTH_MSA_CLIENT_SECRET_FIX"];
+                    options.ClientId = Configuration["WEBSITE_AUTH_MSA_CLIENT_ID"];
+                    options.ClientSecret = Configuration["WEBSITE_AUTH_MSA_CLIENT_SECRET"];
                     options.SaveTokens = true;
                     options.Validate();
-                });
+                })
+				.AddTwitter(options =>
+				{
+					options.ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.DateOfBirth, "dateofbirth");
+					options.ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.Country, "country");
+					options.ConsumerKey = Configuration["WEBSITE_AUTH_TWITTER_CONSUMER_KEY"];
+					options.ConsumerSecret = Configuration["WEBSITE_AUTH_TWITTER_CONSUMER_SECRET"];
+					options.SaveTokens = true;
+					options.Validate();
+				});
 
             services.AddIdentity<ApplicationUser, IdentityRole>(config =>
                 {
@@ -151,9 +160,12 @@ namespace SecurityDemo1
             {
                 options.AllowSameHostRedirectsToHttps();
                 options.AllowedDestinations(new[] 
-                    {   "https://login.microsoftonline.com/",
-                        "https://microsoftonline.com/",
-                        "https://microsoft.com/" });
+                {
+					"https://login.microsoftonline.com/",
+                    "https://microsoftonline.com/",
+                    "https://microsoft.com/",
+					"https://api.twitter.com/"
+				});
             }); //Register this earlier if there's middleware that might redirect.
 
             app.UseAuthentication();
