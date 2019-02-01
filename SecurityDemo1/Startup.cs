@@ -114,7 +114,7 @@ namespace SecurityDemo1
                 config.Services = new List<ServiceDescriptor>(services);
 
                 // optional - default path to view services is /listallservices - recommended to choose your own path
-                config.Path = "/mylistallservicespath";
+                config.Path = "/listallservices";
             });
 
         }
