@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using SecurityDemo1.Data;
 using SecurityDemo1.Models;
 using SecurityDemo1.Services;
+using Ardalis.ListStartupServices;
 
 namespace SecurityDemo1
 {
@@ -107,6 +108,15 @@ namespace SecurityDemo1
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 options.Filters.Add(new RequireHttpsAttribute());
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.Configure<ServiceConfig>(config =>
+            {
+                config.Services = new List<ServiceDescriptor>(services);
+
+                // optional - default path to view services is /listallservices - recommended to choose your own path
+                config.Path = "/mylistallservicespath";
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -117,6 +127,9 @@ namespace SecurityDemo1
             RoleManager<IdentityRole> roleManager,
             UserManager<ApplicationUser> userManager)
         {
+
+            app.UseShowAllServicesMiddleware();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
